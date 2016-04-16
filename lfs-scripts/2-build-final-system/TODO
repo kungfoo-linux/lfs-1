@@ -1,0 +1,196 @@
+	/* 4.7. Test the new LFS system */
+		/* Because GRUB-0.97(lfs-6.6) not support EXT4 filesystem, so
+		   update to GRUB-2.0: */
+	grub-install --force /dev/sda
+
+		/* quit from chroot: */
+	logout
+
+	cp -r /boot/* /mnt/lfs/boot
+
+		/* Edit /boot/grub/grub.cfg: */
+	cat > /boot/grub/grub.cfg << "EOF"
+	set default=0
+	set timeout=3
+
+	insmod ext2
+	set root=(hd0,1)
+
+	menuentry "GNU/Linux, lfs-6.6" {
+		linux /boot/kernel-2.6.32.8 root=/dev/sda1 ro
+	}
+
+	menuentry "GNU/Linux, lfs-7.6" {
+		linux /boot/kernel-2.6.32.8 root=/dev/sda2 ro
+	}
+	EOF
+
+		/* Ok, reboot the system, when display grub, select "lfs-7.6", 
+		   if no problem, you can use the lfs-7.6 system now. */
+
+		/* Reboot the system, and choose lfs-6.6. Login the system, 
+		   then execute the following commands to backup lfs-7.6: */
+	mount -v /dev/sda2 /mnt/lfs
+	rm -f /mnt/lfs/etc/udev/rules.d/70-persistent-net.rules
+		/* If you move a LFS system from a computer to another, you 
+		   may find a warning "Interface eth0 doesn't exist" at the 
+		   boot. This warning cause the eth0 bind with the 
+		   MacAddress. */
+
+		/* Before backup, modify the "/dev/sda2" to "/dev/sda1" in 
+		   /mnt/lfs/etc/fstab file, let the LFS can put the (hd0,0) 
+		   partition. */
+
+		/* And add the grub.cfg: */
+	cat > /mnt/lfs/boot/grub.cfg << "EOF"
+	set default=0
+	set timeout=3
+
+	insmod ext2
+	set root=(hd0,1)
+	video_mode="video=radeonfb:off"
+
+	menuentry "GNU/Linux, lfs-7.6" {
+		linux /boot/kernel-2.6.32.8 root=/dev/sda1 ro $video_mode
+	}
+	EOF
+
+	cd /mnt/lfs
+	tar -cjf /lfs-7.6_basic.tar.bz2 .
+	cp /lfs-7.6_basic.tar.bz2 <to your safe place>
+
+	/* 4.8. Update kernel */
+		/* Use your new LFS to boot system, and start to update the
+		   kernel. */
+
+	tar -xf linux-3.16.2.tar.xz
+	cd linux-3.16.2
+	
+		/* Building the kernel involves a few steps - configuration, 
+		   compilation, and installation. Read the README file in the 
+		   kernel source tree for alternative methods to the way this 
+		   book configures the kernel. */
+		/* Prepare for compilation by running the following command 
+		   (This ensures that the kernel tree is absolutely clean. The 
+		   kernel team recommends that this command be issued prior to 
+		   each kernel compilation. Do not rely on the source tree 
+		   being clean after un-tarring): */
+	make mrproper
+
+		/* Configure the kernel via a menu-driven interface: */
+	make menuconfig
+
+		/* Compile the kernel image and modules: */
+	make
+			/* If you compile the kernel on a multicore machine,
+			   you can specify alone jobs on each CPU, this can 
+			   greatly speed up the compile speed. For example, 
+			   if you have 8 cpus (use 'lscpu' to see), you can 
+			   dispatch 8 jobs:
+			   make -j8
+			   */
+
+		/* If using kernel modules, module configuration in 
+		   /etc/modprobe.d may be required. Information pertaining to 
+		   modules and kernel configuration is located in section 
+		   "Device and Module Handling on an LFS System" and in the 
+		   kernel documentation in the linux-3.16.2/Documentation 
+		   directory. Also, modprobe.conf(5) may be of interest. */
+
+		/* Install the modules, if the kernel configuration 
+		   uses them: */
+	make modules_install
+
+		/* You can put firmware and modules into a specify directory,
+		   for example:
+		   make modules_install INSTALL_MOD_PATH=/tmp/modules_build
+		   */
+
+		/* After kernel compilation is complete, additional step are 
+		   required to complete the installation. Some files need to 
+		   be copied to the /boot directory. */
+		/* The path to the kernel image may vary depending on the 
+		   platform being used. The filename below can be changed to 
+		   suit you taste, but the stem of the filename should be 
+		   "vmlinux" to be compatible with the automatic setup of the 
+		   boot process described in the next section. The following 
+		   command assumes an x86 architecture: */
+	cp -v arch/x86/boot/bzImage /boot/kernel-3.16.2
+
+		/* System.map is a symbol file for the kernel. It maps the 
+		   function entry points of every function in the kernel API, 
+		   as well as the addresses of the kernel data structures for 
+		   the running kernel. It is used as a resource when 
+		   investigating kernel problems. Issue the following command 
+		   to install the map file: */
+	cp -v System.map /boot/System.map-3.16.2
+
+		/* The kernel configuration file .config produced by the "make 
+		   menuconfig" step above contains all the configration 
+		   selections for the kernel that was just compiled. It is a 
+		   good idea to keep this file for future reference: */
+	cp -v .config /boot/config-3.16.2
+
+		/* Install the documentation for the Linux kernel: */
+	install -d /usr/share/doc/linux-3.16.2
+	cp -r Documentation/* /usr/share/doc/linux-3.16.2
+	
+		/* If the kernel source tree is going to be retained, run the 
+		   following command to ensure all files are owned by user 
+		   root: */
+	chown -R 0:0 ../linux-3.16.2
+
+		/* Warning: Some kernel documentation recommends creating a
+		   symlink from /usr/src/linux pointing to the kernel source 
+		   directory. This is specific to kernel prior to the 2.6 
+		   series and must not be created on an LFS system as it can 
+		   cause problems for packages you may wish to build once 
+		   your base LFS system is complete. */
+
+		/* Warning: The headers in the system's include directory 
+		   should always be the ones against which Glibc was compiled, 
+		   that is, the sanitised headers from this Linux kernel 
+		   tarball. Therefore, they should never be replaced by either 
+		   the raw kernel headers or any other kernel sanitized 
+		   headers. */
+
+		/* Configuring Linux Module Load Order. The 
+		   /etc/modprobe.d/usb.conf file needs to be create so that if 
+		   the USB drivers (ehci_hcd, ohci_hcd and uhci_hcd) have been 
+		   build as modules, they will be loaded in the correct order; 
+		   echi_hcd needs to be loaded prior to ohci_hcd and uhci_hcd 
+		   in order to avoid a warning being output at boot time. 
+		   Create a new file /etc/modprobe.d/usb.conf by running the 
+		   following: */
+	install -v -m755 -d /etc/modprobe.d
+	cat > /etc/modprobe.d/usb.conf << "EOF"
+	# Begin /etc/modprobe.d/usb.conf
+
+	install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true
+	install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true
+
+	# End /etc/modprobe.d/usb.conf
+	EOF
+
+		/* Modify the /boot/grub/grub.cfg: */
+	cat > /boot/grub/grub.cfg << "EOF"
+	# NOTE: On my X31 (ATI Radeon Mobility M6 video card) , if I 
+	# want to work at console with 640x480, I should turn on the radeon 
+	# framebuffer, append: 'video=radeonfb:on'; 
+	# For example:
+	# line /boot/kernel-2.6.32.8 root=/dev/sda1 video=radeonfb:on
+	# Execute "cat /proc/fb" to see which framebuffer is using.
+	# If radeonfb:off, it is "radeondrmfb";
+	# and if radeonfb:on, it is "ATI Radeon 4c59".
+
+	set default=0
+	set timeout=3
+
+	insmod ext2
+	set root=(hd0,1)
+	video_mode="video=radeonfb:on"
+
+	menuentry "GNU/Linux, lfs-7.6" {
+		linux /boot/kernel-3.16.2 root=/dev/sda1 ro $video_mode
+	}
+	EOF

@@ -1,0 +1,256 @@
+# common define
+
+# debug mode
+if [ "$1" = "debug" ]; then
+    DEBUG="$1"
+else
+    DEBUG=""
+fi
+BUILD_LOG=build.log
+
+CURDIR=`basename $PWD`
+PKGNAME=`echo ${CURDIR%-*} | tr '[A-Z]' '[a-z]'`
+VER=${CURDIR##*-}
+PKGLETTER=${PKGNAME:0:1}
+
+# source tarball directory
+BLFSSRC=`readlink -f ../../blfs-ext`
+
+# debian package (.deb) directory
+BLFSDEB="../../blfs-deb"
+
+# package info
+MAINTAINER="Fangxm <smecf@163.com>"
+if [ "$ARCHITECTURE" = "" ]; then
+    ARCHITECTURE=`uname -m`
+fi
+
+if [ "$ARCHITECTURE" = "i686" ]; then
+    ARCHITECTURE=i386
+elif [ "$ARCHITECTURE" = "x86_64" ]; then
+    ARCHITECTURE=amd64
+fi
+
+# build directory
+BUILDDIR=$PWD/build
+DEBIANDIR=$BUILDDIR/DEBIAN
+
+# Specifies the number of jobs to run simultaneously:
+PROCESSOR=`cat /proc/cpuinfo | grep "^processor" | wc -l`
+if [ "$PROCESSOR" = "1" ]; then
+    JOBS=""
+else
+    JOBS="-j$PROCESSOR"
+fi
+
+# color define
+CLR_RED="\E[31m"
+CLR_GREEN="\E[32m"
+CLR_END="\E[0m"
+
+# fixed control file header
+PKGHDR=$(echo -e "Package:" \
+    "$PKGNAME\nVersion:" \
+    "$VER\nArchitecture:" \
+    "$ARCHITECTURE\nMaintainer:" \
+    "$MAINTAINER")
+
+POSTINST_FUNC_DEF=""
+POSTINST_CONF_DEF=""
+POSTRM_FUNC_DEF=""
+POSTRM_CONF_DEF=""
+
+perl_module_setting() {
+    REMOVE_PERL_FILES=1
+    PERL_MODULES_DIR=perl-modules
+    PERL_MODULES_PREFIX=perl-module
+    PKGNAME=`echo $PERL_MODULES_PREFIX-${CURDIR%-*} | tr '[A-Z]' '[a-z]'`
+    PKGLETTER=p/$PERL_MODULES_DIR
+    BLFSDEB=../../../blfs-deb
+
+    PKGHDR=$(echo -e "Package:" \
+    "$PKGNAME\nVersion:" \
+    "$VER\nArchitecture:" \
+    "$ARCHITECTURE\nMaintainer:" \
+    "$MAINTAINER")
+}
+
+python_module_setting() {
+    PYTHON_MODULES_DIR=python-modules
+    PYTHON_MODULES_PREFIX=python-module
+    PKGNAME=`echo $PYTHON_MODULES_PREFIX-${CURDIR%-*} | tr '[A-Z]' '[a-z]'`
+    PKGLETTER=p/$PYTHON_MODULES_DIR
+    BLFSDEB=../../../blfs-deb
+
+    PKGHDR=$(echo -e "Package:" \
+    "$PKGNAME\nVersion:" \
+    "$VER\nArchitecture:" \
+    "$ARCHITECTURE\nMaintainer:" \
+    "$MAINTAINER")
+}
+
+# strip debug info
+strip_debug() {
+    find $BUILDDIR -type f -exec strip --strip-debug '{}' ';'
+}
+
+# remove dir under $BUILDDIR/usr/share/info/
+remove_infodir() {
+    if [ -f $BUILDDIR/usr/share/info/dir ]; then
+        rm -f $BUILDDIR/usr/share/info/dir
+    fi
+}
+
+remove_empty_dir() {
+    find $1 -depth -type d -empty -exec rm -r '{}' ';'
+}
+
+remove_perl_files() {
+    rm -f $BUILDDIR/usr/lib/perl5/5.20.0/i686-linux/perllocal.pod
+    find $BUILDDIR/usr/lib/perl5/site_perl/5.20.0/i686-linux/auto/ \
+        -name '.packlist' -type f -exec rm -f '{}' ';'
+}
+
+# cleanup the build source directory
+cleanup_src() {
+    change_to=$1
+    srcdir=$2
+
+    cd $change_to
+    if [ "$DEBUG" = "" ]; then
+        rm -rf $srcdir
+    fi
+
+    strip_debug
+    remove_infodir
+
+    if [ "$REMOVE_PERL_FILES" = 1 ]; then
+        remove_perl_files
+        remove_empty_dir $BUILDDIR
+    fi
+}
+
+# normal functions. You can override these.
+build_src() {
+    true
+}
+
+configure() {
+    true
+}
+
+gen_postinst_real() {
+cat > $DEBIANDIR/postinst << EOF
+#!/bin/sh
+set -e
+
+$POSTINST_FUNC_DEF
+
+case "\$1" in
+    configure)
+$POSTINST_CONF_DEF
+        ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+
+    *) 
+        echo "postinst called with unknown argument \\\`\$1'" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
+EOF
+chmod +x $DEBIANDIR/postinst
+}
+
+gen_postrm_real() {
+cat > $DEBIANDIR/postrm << EOF
+#!/bin/sh
+set -e
+
+$POSTRM_FUNC_DEF
+
+case "\$1" in
+    remove)
+$POSTRM_CONF_DEF
+	;;
+
+    purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+	;;
+
+    *)
+	echo "postrm called with unknown argument \\\`\$1'" >&2
+	exit 1
+	;;
+esac
+
+exit 0
+EOF
+chmod +x $DEBIANDIR/postrm
+}
+
+set_deb_def() {
+    true
+}
+
+gen_postinst() {
+    if [ "$POSTINST_CONF_DEF" != "" ]; then
+        gen_postinst_real
+    fi
+}
+
+gen_postrm() {
+    if [ "$POSTRM_CONF_DEF" != "" ]; then
+        gen_postrm_real
+    fi
+}
+
+archive() {
+    dpkg-deb -b -Zxz $BUILDDIR \
+        $BLFSDEB/$PKGLETTER/$PKGNAME-$VER-$ARCHITECTURE.deb
+
+    if [ "$DEBUG" = "" ]; then
+        rm -rf $BUILDDIR
+    fi
+
+    if [ ! -e $PKGNAME-$VER.deb ]; then
+        ln -sfv $BLFSDEB/$PKGLETTER/$PKGNAME-$VER-$ARCHITECTURE.deb .
+    fi
+}
+
+build_standard_perl_module() {
+perl_module_setting
+tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/$srcfil
+cd $srcdir
+
+perl Makefile.PL
+make
+make DESTDIR=$BUILDDIR install
+
+cleanup_src .. $srcdir
+}
+
+build_deb() {
+    mkdir -pv $DEBIANDIR
+    set_deb_def
+    gen_control
+    gen_postinst
+    gen_postrm
+    archive
+}
+
+build_internal() {
+    build_src
+    configure
+    build_deb
+}
+
+build() {
+    if [ "$DEBUG" = "debug" ]; then
+        build_internal 2>&1 | tee $BUILD_LOG
+    else
+	build_internal
+    fi
+}

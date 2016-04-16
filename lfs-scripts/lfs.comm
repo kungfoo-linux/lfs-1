@@ -1,0 +1,29 @@
+# the LFS environment variable
+
+SCRIPT_DIR=`basename $(dirname $(readlink -f $0))`
+if [ "$SCRIPT_DIR" = "1-build-tmp-system" ]; then
+    LFS=/lfs
+fi
+
+BUILDDIR=$LFS/build
+LFSSRC=$BUILDDIR/packages
+PATCHES=$BUILDDIR/packages/patches
+BUILDLOG=${0%.sh}.log
+
+# processor number
+JOBS=`cat /proc/cpuinfo | grep "^processor" | wc -l`
+
+build_src() {
+    true
+}
+
+configure() {
+    true
+}
+
+build() {
+    pushd $BUILDDIR > /dev/null
+    build_src
+    configure
+    popd > /dev/null
+}

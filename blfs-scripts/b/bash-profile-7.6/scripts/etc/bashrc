@@ -1,0 +1,15 @@
+# Begin /etc/bashrc
+# System wide aliases and functions.
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias lf='ls -FA'
+alias ll='ls -lA'
+alias less='less --quiet'
+alias more='more -d'
+alias grep='grep --color=auto'
+
+# End /etc/bashrc
