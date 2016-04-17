@@ -60,7 +60,7 @@ Description: object-relational SQL database
      su - postgres
      psql
      postgres=# create database test;
-     postgres=# create user root with password 'Fangxm' createdb;
+     postgres=# create user root with password 'secret' createdb;
      postgres=# \q
  .
  Stop database:

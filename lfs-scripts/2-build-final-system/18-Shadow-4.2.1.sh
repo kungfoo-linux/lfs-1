@@ -42,7 +42,7 @@ build_src() {
     grpconv
 
     # Setting the root password:
-    echo root:admin | chpasswd
+    echo root:secret | chpasswd
 
     cd .. && rm -rf $srcdir
 }

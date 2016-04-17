@@ -68,7 +68,7 @@ Driver 		= MySQL
 DATABASE        = test
 SERVER          = localhost
 UID             = root
-PASSWORD        = Fangxm
+PASSWORD        = secret
 SOCKET		="
     addline_unique "$pattern" "$line" $file
 }

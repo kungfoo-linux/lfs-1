@@ -59,7 +59,7 @@ ReadOnly        = No
 CommLog         = 
 Servername      = localhost
 Username        = root
-Password        = Fangxm"
+Password        = secret"
     addline_unique "$pattern" "$line" $file
 }
 '

@@ -66,7 +66,7 @@ Description: Oracle Database Instant Client
  recompile, no hassle.
  .
  Test:
- $ isql oracle_local root Fangxm -v
+ $ isql oracle_local root secret -v
       +-----------------------+
       | Connected!            |
       |                       |

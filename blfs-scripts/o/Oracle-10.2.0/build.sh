@@ -145,7 +145,7 @@ dbca
     #
     # 5). Database Credentials
     #     [x] Use the Same Password for All Accounts
-    #         Password: Fangxm
+    #         Password: secret
     #
     # 6). Storage Options
     #     [x] File System
@@ -268,7 +268,7 @@ sqlplus / as sysdba
 cat > create_user.sql << "EOF"
 -- Create user --
 CREATE USER root
-	IDENTIFIED BY Fangxm
+	IDENTIFIED BY secret
 	DEFAULT TABLESPACE USERS
 	TEMPORARY TABLESPACE TEMP;
 
@@ -288,12 +288,11 @@ CREATE TABLE test (
 	name VARCHAR2(16) NOT NULL
 );
 
-INSERT INTO test VALUES (93001, 'Dinghn');
-INSERT INTO test VALUES (93002, 'Fangxm');
-INSERT INTO test VALUES (93003, 'Wangyc');
+INSERT INTO test VALUES (1, 'foo');
+INSERT INTO test VALUES (2, 'bar');
 COMMIT;
 EOF
-sqlplus root@local		# Enter password: "Fangxm"
+sqlplus root@local		# Enter password: "secret"
     SQL> start create_table.sql
 
 # Support ODBC:
@@ -314,7 +313,7 @@ Database        = orcl
 EOF
 Servername      = local
 
-isql oracle_local root Fangxm -v
+isql oracle_local root secret -v
    # +---------------------------------------+
    # | Connected!                            |
    # |                                       |

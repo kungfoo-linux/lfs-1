@@ -111,7 +111,7 @@ show_note() {
     "\n" \
     "3). update the table:\n" \
     "mysql> use mysql\n" \
-    "mysql> update user set host='%', password=PASSWORD('Fangxm')\n" \
+    "mysql> update user set host='%', password=PASSWORD('secret')\n" \
     "	    where host='localhost' and user='root';\n" \
     "mysql> delete from user where host!='%';\n" \
     "mysql> commit;\n" \
@@ -150,7 +150,7 @@ POSTINST_CONF_DEF='
 	# administrator, so use the following command as the root user to
 	# set one. Replace <new-password> with your own. 
 	#mysqld_safe --user=mysql 2>&1 >/dev/null &
-	#mysqladmin -u root password "Fangxm"
+	#mysqladmin -u root password "secret"
 	#mysqladmin -p shutdown
 
 	show_note

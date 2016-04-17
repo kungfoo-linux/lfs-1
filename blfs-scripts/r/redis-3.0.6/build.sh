@@ -42,7 +42,7 @@ REDIS_SRV=$REDIS_HOME/redis-server
 REDIS_CLI=$REDIS_HOME/redis-cli
 CONF=$REDIS_HOME/redis.conf
 PIDFILE=/var/run/redis.pid
-PASSWORD="Fangxm"
+PASSWORD="secret"
 
 case "$1" in
     start)

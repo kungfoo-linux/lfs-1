@@ -55,7 +55,7 @@ change_to_lfs_user() {
 
     if ! getent passwd "lfs" > /dev/null 2>&1 ; then
         useradd -s /bin/bash -g lfs -m -k /dev/null lfs
-        echo lfs:admin | chpasswd
+        echo lfs:secret | chpasswd
     fi
 
     mkdir -pv $LFS/tools $BUILDDIR

@@ -154,6 +154,7 @@
 *   2.1.63.5. Oracle-instant-client-10.2.0.5
     2.1.63.6. apache-log4j-2.1
     2.1.63.7. phantomjs-1.9.8
+    2.1.63.8. libmcrypt-2.5.8
 ```
 
 #### 2.2. Graphics and Font Libraries
