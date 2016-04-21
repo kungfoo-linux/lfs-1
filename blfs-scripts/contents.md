@@ -406,6 +406,7 @@
 *   3.4.14.3. pjproject-2.3
 *   3.4.14.4. netty-4.0.26 (extract to /opt/libs)
 *   3.4.14.5. disruptor-3.3.2 (copy to /opt/libs)
+    3.4.14.6. zeromq-4.1.4
 ```
 
 #### 3.5. Text Web Browsers
