@@ -452,7 +452,7 @@
 *   4.3.3. PostgreSQL-9.3.5
 **  4.3.4. SQLite-3.8.6
 *   4.3.5. Other
-*   4.3.5.1. MySQL-5.1.73
+ *  4.3.5.1. MySQL-5.6.29
 ```
 
 #### 4.4. Other Server Software
