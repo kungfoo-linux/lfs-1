@@ -45,11 +45,6 @@ cat > /etc/vimrc << "EOF"
 " Begin /etc/vimrc
 
 set nocompatible
-set backspace=2
-set hlsearch
-set vb t_vb=
-set background=dark
-syntax on
 
 if &term == "xterm"
     set t_Co=8
@@ -69,33 +64,37 @@ if has("autocmd")
     \ endif
 endif
 
-" End /etc/vimrc
-EOF
-
-    # create ~/.vimrc file:
-cat > ~/.vimrc << EOF
-" For all style
-set ai noic nomagic ruler aw incsearch wildmenu wrap
-set ts=8 sw=8 tw=78
-" set fo=tcqro
+syntax on
+set hlsearch
+set vb t_vb=
+set background=dark
+set ai noic nomagic ruler aw incsearch wildmenu wrap expandtab
+set ts=4 sw=4 tw=78 bs=2
 set encoding=utf-8
 set fileencodings=utf-8-bom,ucs-bom,utf-8,cp936,gb18030,ucs,big5
+set hid
 
 " For C language programming
+" set fo=tcqro
 set cin completeopt=longest,menu
+
+" parse gradle file as groovy
+au BufNewFile,BufRead *.gradle setf groovy
 
 " open filetype detect
 filetype plugin indent on
-au FileType java,javascript,php,conf,sh set ts=4 sw=4 expandtab
-au FileType xml set ts=2 sw=2 expandtab
-
-" Change buffer - without saving
-set hid
+au FileType c,c++ set ts=8 sw=8
+au FileType xml,html set ts=2 sw=2
 
 " automatic save and restore folders
 au BufWinLeave *.* silent mkview
 au BufWinEnter *.* silent loadview
 
+" End /etc/vimrc
+EOF
+
+    # create ~/.vimrc file:
+cat > ~/.vimrc << EOF
 " Word completion
 "
 EOF

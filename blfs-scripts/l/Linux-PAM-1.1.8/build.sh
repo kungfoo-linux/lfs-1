@@ -55,22 +55,6 @@ Description: Pluggable Authentication Modules library
  The Linux PAM package contains Pluggable Authentication Modules used to 
  enable the local system administrator to choose how applications 
  authenticate users.
- .
- [mkhomedir_helper] is a helper binary that creates home directories.
- .
- [pam_tally] is used to interrogate and manipulate the login counter file.
- .
- [pam_tally2] is used to interrogate and manipulate the login counter file, 
- but does not have some limitations that pam_tally does.
- .
- [pam_timestamp_check] is used to check if the default timestamp is valid
- .
- [unix_chkpwd] is a helper binary that verifies the password of the current 
- user.
- .
- [unix_update] is a helper binary that updates the password of a given user.
- .
- [libpam.so] provides the interfaces between applications and the PAM modules.
 EOF
 }
 

@@ -41,27 +41,6 @@ Description: interactive high-level object-oriented language
  Python is an interpreted, interactive object-oriented programming language 
  suitable (amongst other uses) for distributed application development, 
  scripting, numeric computing and system testing.
- .
- [2to3]
- is a Python program that reads Python 2.x source code and applies a series
- of fixers to transform it into valid Python 3.x code.
- .
- [idle]
- is a wrapper script that opens a Python aware GUI editor. For this script to
- run, you must have installed Tk before Python so that the Tkinter Python
- module is built.
- .
- [pydoc]
- is the Python documentation tool.
- .
- [python]
- is an interpreted, interactive, object-oriented programming language.
- .
- [python2.7]
- is a version-specific name for the python program.
- .
- [smtpd.py]
- is an SMTP proxy implemented in Python.
 EOF
 }
 

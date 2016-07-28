@@ -2,19 +2,19 @@
 . ../../blfs.comm
 
 build_src() {
-srcfil=libarchive-3.1.2.tar.gz
-srcdir=libarchive-3.1.2
-tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/$srcfil
-cd $srcdir
+    srcfil=libarchive-3.1.2.tar.gz
+    srcdir=libarchive-3.1.2
+    tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/$srcfil
+    cd $srcdir
 
-./configure --prefix=/usr \
-	--disable-static \
-	--without-xml2 \
-	--without-nettle
-make
-make DESTDIR=$BUILDDIR install
+    ./configure --prefix=/usr \
+        --disable-static \
+        --without-xml2 \
+        --without-nettle
+    make
+    make DESTDIR=$BUILDDIR install
 
-cleanup_src .. $srcdir
+    cleanup_src .. $srcdir
 }
 
 gen_control() {

@@ -63,6 +63,7 @@
 -   1.3.5. Nano-2.3.6
  *  1.3.6. Vim-7.4
 -   1.3.7. Other Editors
+ *  1.3.7.1. Emacs-24.5
 ```
 
 #### 1.4. Shells
@@ -104,7 +105,7 @@
 *   2.1.18. JSON-C-0.12
 *   2.1.19. JSON-GLib-1.0.2
 *   2.1.20. keyutils-1.5.9
-*   2.1.21. libarchive-3.1.2
+**  2.1.21. libarchive-3.1.2
 *   2.1.22. libassuan-2.1.2
 *   2.1.23. libatasmart-0.19
 *   2.1.24. libatomic_ops-7.4.2 (libatomic-ops-7.4.2)
@@ -133,7 +134,7 @@
 *   2.1.47. libxml2-2.9.1
 *   2.1.48. libxslt-1.1.28
 *   2.1.49. libzeitgeist-0.3.18
-*   2.1.50. LZO-2.08
+**  2.1.50. LZO-2.08
 *   2.1.51. mtdev-1.1.5
 *   2.1.52. NSPR-4.10.7
 *   2.1.53. OpenOBEX-1.7.1
@@ -153,7 +154,7 @@
 *   2.1.63.4. protobuf-2.5.0
 *   2.1.63.5. Oracle-instant-client-10.2.0.5
     2.1.63.6. apache-log4j-2.1
-    2.1.63.7. phantomjs-1.9.8
+    2.1.63.7. phantomjs-2.1.1
     2.1.63.8. libmcrypt-2.5.8
 ```
 
@@ -270,7 +271,7 @@
 -   2.5.1. Bazaar-2.5.1
 *   2.5.2. Check-0.9.14
 *   2.5.3. Clisp-2.49
-*   2.5.4. CMake-3.0.1
+**  2.5.4. CMake-3.0.1
 -   2.5.5. CVS-1.11.23
     2.5.6. DejaGnu-1.5.1
     2.5.7. Doxygen-1.8.8
@@ -404,9 +405,8 @@
 *   3.4.14.1. libproxy-0.4.11
 *   3.4.14.2. state-threads-1.9
 *   3.4.14.3. pjproject-2.3
-*   3.4.14.4. netty-4.0.26 (extract to /opt/libs)
-*   3.4.14.5. disruptor-3.3.2 (copy to /opt/libs)
-    3.4.14.6. zeromq-4.1.4
+*   3.4.14.4. disruptor-3.3.2 (copy to /opt/libs)
+    3.4.14.5. zeromq-4.1.4
 ```
 
 #### 3.5. Text Web Browsers
@@ -465,6 +465,7 @@
 **  4.4.4.2. kafka-0.8.2.0
     4.4.4.3. redis-3.0.0
     4.4.4.4. memcached-1.4.24
+ *  4.4.4.5. strongswan-5.5.0
 ```
 
 ### Part 5. X + Window Managers
