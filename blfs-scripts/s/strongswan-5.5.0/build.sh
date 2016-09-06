@@ -9,30 +9,44 @@ build_src() {
     cd $srcdir
 
     ./configure --prefix=/opt/strongswan-$version \
-        --enable-openssl \
-        --enable-shared \
-        --enable-md4 \
-        --enable-eap-mschapv2 \
         --enable-eap-aka \
         --enable-eap-aka-3gpp2 \
+        --enable-eap-dynamic \
         --enable-eap-gtc \
         --enable-eap-identity \
         --enable-eap-md5 \
+        --enable-eap-mschapv2 \
         --enable-eap-peap \
         --enable-eap-radius \
         --enable-eap-sim \
-        --enable-eap-sim-file \
         --enable-eap-simaka-pseudonym \
         --enable-eap-simaka-reauth \
         --enable-eap-simaka-sql \
+        --enable-eap-sim-file \
         --enable-eap-tls \
         --enable-eap-tnc \
         --enable-eap-ttls \
+        --enable-dhcp \
+        --enable-md4 \
+        --enable-openssl \
+        --enable-shared \
+        --enable-unity \
         --enable-xauth-eap \
         --enable-xauth-noauth \
         --disable-static \
         --disable-mysql \
         --disable-ldap
+
+    # Note, if this program want to run under OpenVZ machine, add these
+    # configuration parameters:
+    # ------------------------
+    #   --enable-addrblock
+    #   --enable-radattr
+    #   --enable-nat-transport
+    #   --enable-kernel-netlink
+    #   --enable-kernel-libipsec
+    # ------------------------
+
     make $JOBS
     make DESTDIR=$BUILDDIR install
 
@@ -60,39 +74,46 @@ EOF
 }
 
 set_deb_def() {
-POSTINST_CONF_DEF='
+POSTINST_FUNC_DEF='
+choose_network_interface() {
     i=0
     name=()
     ip=()
-    for line in `ip addr | awk -F: '/inet /' | \
-        awk '{split($2, a, "/"); print $NF ":" a[1]}'` ; do
-    
+    ips=`ip addr | awk -F: "/inet /" | awk "{split(\\$2, a, \"/\"); print \\$NF \":\" a[1]}"`
+    for line in $ips ; do
         name[i]=`echo $line | cut -d ":" -f 1`
         ip[i]=`echo $line | cut -d ":" -f 2`
         let n=$i+1
-        echo $n: ${name[$i]} ${ip[$i]}
-        let i++
+        echo >&2 $n: ${name[$i]} ${ip[$i]}
+        let i+=1
     done
     
     while true ; do
-        read -p "choice the network interface(1, ...)" choice
+        read -p "choice the network interface(1, ...): " choice
         size=${#name[*]}
         if [ $choice -lt 1 -o $choice -gt $size ] ; then
-            echo "choice error."
+            echo >&2 "choice error."
             continue
         fi
 
-        let n=$choice-1
+        if [ $choice = "1" ] ; then
+            n=0
+        else
+            let n=$choice-1
+        fi
 
-        read -p "You choice the IP \"${ip[$n]}\", are you sure[y/n]:" choice
+        read -p "You choice the IP \"${ip[$n]}\", are you sure[y/n]: " choice
         if [ $choice == "y" ] ; then
+            echo ${ip[$n]}
             break
         fi
     done
+}
+'
 
-    ip=${ip[$n]}
-    sed -i "s/VPN-SERVER-ADDRESS/$ip/" /opt/strongswan/etc/strongswan.mobileconfig
-	'
+POSTINST_CONF_DEF='
+        ip=$(choose_network_interface)
+        sed -i "s/VPN-SERVER-ADDRESS/$ip/" /opt/strongswan/etc/strongswan.mobileconfig'
 }
 
 build

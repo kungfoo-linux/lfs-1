@@ -13,7 +13,9 @@ make PREFIX=$BUILDDIR/opt/redis-3.0.6 \
      install
 
 cp redis.conf sentinel.conf $BUILDDIR/opt/redis-3.0.6
-sed -i 's/daemonize no/daemonize yes/' $BUILDDIR/opt/redis-3.0.6/redis.conf
+sed -i -e 's/daemonize no/daemonize yes/' \
+    -e 's/#bind 127.0.0.1/bind 127.0.0.1/' \
+    $BUILDDIR/opt/redis-3.0.6/redis.conf
 
 cleanup_src .. $srcdir
 }

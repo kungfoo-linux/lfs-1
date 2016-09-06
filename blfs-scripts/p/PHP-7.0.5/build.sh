@@ -252,7 +252,7 @@ Description: PHP scripting language for creating dynamic web sites
  .
  Install php-fpm service:
  $ cp /opt/php/etc/init.d.php-fpm /etc/init.d/php-fpm
- $ chkconfig php-fpm on
+ $ chkconfig php-fpm on     # or: systemctl enable php-fpm
  $ service php-fpm start
 EOF
 }

@@ -141,7 +141,7 @@ configure() {
 
 gen_postinst_real() {
 cat > $DEBIANDIR/postinst << EOF
-#!/bin/sh
+#!/bin/bash
 set -e
 
 $POSTINST_FUNC_DEF
@@ -167,7 +167,7 @@ chmod +x $DEBIANDIR/postinst
 
 gen_postrm_real() {
 cat > $DEBIANDIR/postrm << EOF
-#!/bin/sh
+#!/bin/bash
 set -e
 
 $POSTRM_FUNC_DEF
