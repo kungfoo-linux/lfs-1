@@ -25,8 +25,8 @@ EOF
 
 set_deb_def() {
 POSTINST_FUNC_DEF='
-	srcfil=scala-2.11.5.tgz
-	srcdir=scala-2.11.5
+	srcfil=scala-2.11.11.tgz
+	srcdir=scala-2.11.11
 	'
 
 POSTINST_CONF_DEF='
@@ -39,7 +39,7 @@ POSTINST_CONF_DEF='
 	'
 
 POSTRM_FUNC_DEF='
-	srcdir=scala-2.11.5
+	srcdir=scala-2.11.11
 '
 
 POSTRM_CONF_DEF='

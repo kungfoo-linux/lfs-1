@@ -18,9 +18,11 @@ strip_debug
 
 configure() {
 mkdir -pv $BUILDDIR/etc/profile.d
+install -dm 777 $BUILDDIR/root/.go
 cat > $BUILDDIR/etc/profile.d/go.sh << "EOF"
 export GOROOT=/opt/go
-export PATH=$PATH:$GOROOT/bin
+export GOPATH=~/.go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 EOF
 }
 

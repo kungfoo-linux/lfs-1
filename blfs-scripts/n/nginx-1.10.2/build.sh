@@ -2,15 +2,15 @@
 . ../../blfs.comm
 
 build_src() {
-    version=1.8.1
+    version=1.10.2
     srcfil=nginx-$version.tar.gz
     srcdir=nginx-$version
     dstdir=/opt/nginx-$version
     tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/$srcfil
     cd $srcdir
 
-    tar -xf $BLFSSRC/p/PCRE-8.35/other-version/pcre-8.38.tar.bz2
-    tar -xf $BLFSSRC/o/OpenSSL-1.0.1i/other-version/openssl-1.0.2f.tar.gz
+    tar -xf $BLFSSRC/p/PCRE-8.35/other-version/pcre-8.39.tar.bz2
+    tar -xf $BLFSSRC/o/OpenSSL-1.0.1i/other-version/openssl-1.0.2h.tar.gz
     tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/deps/zlib-1.2.8.tar.xz
     
     ./configure --prefix=$dstdir \
@@ -20,8 +20,8 @@ build_src() {
         --http-uwsgi-temp-path=$dstdir/temp/uwsgi_temp \
         --http-scgi-temp-path=$dstdir/temp/scgi_temp \
         --with-http_ssl_module \
-        --with-pcre=./pcre-8.38 \
-        --with-openssl=./openssl-1.0.2f \
+        --with-pcre=./pcre-8.39 \
+        --with-openssl=./openssl-1.0.2h \
         --with-zlib=./zlib-1.2.8
     make
     make DESTDIR=$BUILDDIR install

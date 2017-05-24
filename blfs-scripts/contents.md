@@ -150,12 +150,11 @@
 *   2.1.63. Other
 *   2.1.63.1. libaio-0.3.110
 *   2.1.63.2. libedit-3.1.20141030
-*   2.1.63.3. protobuf-2.4.1
-*   2.1.63.4. protobuf-2.5.0
-*   2.1.63.5. Oracle-instant-client-10.2.0.5
-    2.1.63.6. apache-log4j-2.1
-    2.1.63.7. phantomjs-2.1.1
-    2.1.63.8. libmcrypt-2.5.8
+*   2.1.63.3. protobuf-2.5.0
+*   2.1.63.4. Oracle-instant-client-10.2.0.5
+    2.1.63.5. apache-log4j-2.1
+    2.1.63.6. phantomjs-2.1.1
+    2.1.63.7. libmcrypt-2.5.8
 ```
 
 #### 2.2. Graphics and Font Libraries
@@ -331,7 +330,7 @@
 *   2.5.42.11. eclipse-4.6.0
 *   2.5.42.12. Erlang/OTP-17.4 (Erlang-17.4)
 *   2.5.42.13. golang-1.4.2
-*   2.5.42.14. Scala-2.11.5
+*   2.5.42.14. Scala-2.11.11
 **  2.5.42.15. apache-maven-3.0.5
 **  2.5.42.16. gradle-2.4
 **  2.5.42.17. apache-groovy-2.4.4
@@ -434,7 +433,7 @@
 -   4.1.3. ProFTPD-1.3.5
 *   4.1.4. vsftpd-3.0.2
 *   4.1.5. Other
- *  4.1.5.1. nginx-1.8.1
+ *  4.1.5.1. nginx-1.10.2
 ```
 
 #### 4.2. Mail Server Software
@@ -452,7 +451,7 @@
 *   4.3.3. PostgreSQL-9.3.5
 **  4.3.4. SQLite-3.8.6
 *   4.3.5. Other
- *  4.3.5.1. MySQL-5.6.29
+ *  4.3.5.1. MySQL-5.6.36
 ```
 
 #### 4.4. Other Server Software
@@ -463,7 +462,7 @@
     4.4.4. Other
     4.4.4.1. zookeeper-3.4.6
 **  4.4.4.2. kafka-0.8.2.0
-    4.4.4.3. redis-3.0.0
+    4.4.4.3. redis-3.2.6
     4.4.4.4. memcached-1.4.24
  *  4.4.4.5. strongswan-5.5.0
 ```

@@ -2,7 +2,7 @@
 . ../../blfs.comm
 
 build_src() {
-    version=5.6.29
+    version=5.6.36
     srcfil=mysql-$version.tar.gz
     srcdir=mysql-$version
     prefix=/opt/mysql-$version
