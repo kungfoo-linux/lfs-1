@@ -42,11 +42,11 @@ EOF
 
 cat > $BUILDDIR/$prefix/my.cnf << "EOF"
 [client]
-socket   = /run/mysqld/mysqld.sock
+socket   = /opt/mysql/mysqld.sock
 
 [mysqld]
 sql_mode = NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-socket   = /run/mysqld/mysqld.sock
+socket   = /opt/mysql/mysqld.sock
 EOF
 }
 
