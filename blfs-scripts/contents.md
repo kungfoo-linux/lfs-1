@@ -433,7 +433,7 @@
 -   4.1.3. ProFTPD-1.3.5
 *   4.1.4. vsftpd-3.0.2
 *   4.1.5. Other
- *  4.1.5.1. nginx-1.10.2
+ *  4.1.5.1. nginx-1.12.0
 ```
 
 #### 4.2. Mail Server Software

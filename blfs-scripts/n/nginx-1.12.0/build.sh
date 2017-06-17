@@ -2,16 +2,16 @@
 . ../../blfs.comm
 
 build_src() {
-    version=1.10.2
+    version=1.12.0
     srcfil=nginx-$version.tar.gz
     srcdir=nginx-$version
     dstdir=/opt/nginx-$version
     tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/$srcfil
     cd $srcdir
 
-    tar -xf $BLFSSRC/p/PCRE-8.35/other-version/pcre-8.39.tar.bz2
-    tar -xf $BLFSSRC/o/OpenSSL-1.0.1i/other-version/openssl-1.0.2h.tar.gz
-    tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/deps/zlib-1.2.8.tar.xz
+    tar -xf $BLFSSRC/p/PCRE-8.35/other-version/pcre-8.40.tar.bz2
+    tar -xf $BLFSSRC/o/OpenSSL-1.0.1i/other-version/openssl-1.0.2k.tar.gz
+    tar -xf $BLFSSRC/z/zlib-1.2.11/zlib-1.2.11.tar.xz
     
     ./configure --prefix=$dstdir \
         --http-client-body-temp-path=$dstdir/temp/client_body_temp \
@@ -20,9 +20,9 @@ build_src() {
         --http-uwsgi-temp-path=$dstdir/temp/uwsgi_temp \
         --http-scgi-temp-path=$dstdir/temp/scgi_temp \
         --with-http_ssl_module \
-        --with-pcre=./pcre-8.39 \
-        --with-openssl=./openssl-1.0.2h \
-        --with-zlib=./zlib-1.2.8
+        --with-pcre=./pcre-8.40 \
+        --with-openssl=./openssl-1.0.2k \
+        --with-zlib=./zlib-1.2.11
     make
     make DESTDIR=$BUILDDIR install
     touch $BUILDDIR/$dstdir/html/favicon.ico

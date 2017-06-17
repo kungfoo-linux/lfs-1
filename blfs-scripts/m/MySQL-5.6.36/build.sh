@@ -23,6 +23,8 @@ build_src() {
         #-DENABLE_MEMCACHED_SASL=ON
         #-DENABLE_MEMCACHED_SASL_PWDB=ON
 
+    # http://dev.mysql.com/doc/refman/5.6/en/source-configuration-options.html
+
     make
     make DESTDIR=$BUILDDIR install
 
@@ -47,6 +49,7 @@ socket   = /run/mysqld/mysqld.sock
 [mysqld]
 sql_mode = NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 socket   = /run/mysqld/mysqld.sock
+explicit_defaults_for_timestamp = true
 EOF
 }
 
