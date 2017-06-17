@@ -19,10 +19,10 @@ build_src() {
         --http-fastcgi-temp-path=$dstdir/temp/fastcgi_temp \
         --http-uwsgi-temp-path=$dstdir/temp/uwsgi_temp \
         --http-scgi-temp-path=$dstdir/temp/scgi_temp \
-        --with-http_ssl_module \
         --with-pcre=./pcre-8.40 \
         --with-openssl=./openssl-1.0.2k \
-        --with-zlib=./zlib-1.2.11
+        --with-zlib=./zlib-1.2.11 \
+        --with-http_ssl_module
     make
     make DESTDIR=$BUILDDIR install
     touch $BUILDDIR/$dstdir/html/favicon.ico
