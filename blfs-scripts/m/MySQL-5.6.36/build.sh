@@ -5,7 +5,7 @@ build_src() {
     version=5.6.36
     srcfil=mysql-$version.tar.gz
     srcdir=mysql-$version
-    prefix=/opt/mysql-$version
+    prefix=/opt/mysql
     tar -xf $BLFSSRC/$PKGLETTER/$CURDIR/$srcfil
     cd $srcdir
     pushd .
@@ -29,7 +29,6 @@ build_src() {
     make DESTDIR=$BUILDDIR install
 
     rm -rf $BUILDDIR/$prefix/mysql-test
-    ln -sv mysql-$version $BUILDDIR/opt/mysql
 
     popd
     cleanup_src .. $srcdir
@@ -44,11 +43,11 @@ EOF
 
 cat > $BUILDDIR/$prefix/my.cnf << "EOF"
 [client]
-socket   = /run/mysqld/mysqld.sock
+socket   = /opt/mysql/mysqld.sock
 
 [mysqld]
 sql_mode = NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-socket   = /run/mysqld/mysqld.sock
+socket   = /opt/mysql/mysqld.sock
 explicit_defaults_for_timestamp = true
 EOF
 }
